@@ -33,6 +33,10 @@ enum {
     USER_ACTIVITY_EVENT_LAST = USER_ACTIVITY_EVENT_ACCESSIBILITY, // Last valid event code.
 };
 
+#define GO_TO_SLEEP_REASON_DEVICE_ADMIN 1
+#define GO_TO_SLEEP_REASON_TIMEOUT 2
+#define GO_TO_SLEEP_REASON_POWER_BUTTON 4
+
 }; // namespace android
 
 #endif // ANDROID_POWERMANAGER_H
