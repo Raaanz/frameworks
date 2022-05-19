@@ -45,8 +45,6 @@
 #include <string.h>
 #include <utils/SystemClock.h>
 
-#include "cutils/properties.h"
-
 static jclass class_gnssMeasurementsEvent;
 static jclass class_gnssMeasurement;
 static jclass class_location;
@@ -653,80 +651,11 @@ Return<void> GnssCallback::gnssLocationCbImpl(const T& location) {
 }
 
 Return<void> GnssCallback::gnssLocationCb(const GnssLocation_V1_0& location) {
-    char value[PROPERTY_VALUE_MAX] = {0};
-    property_get("ro.boot.vm", value, "0");
-    if(strcmp(value, "1") == 0){
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.latitude", value, "30.537568333333336");
-        double latitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.longitude", value, "114.3504");
-        double longitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.altitude", value, "-12.7");
-        double altitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.bearing", value, "344.61");
-        float bearing = strtod(value, NULL);
-
-        GnssLocation_V1_0 vplocation = createGnssLocation_V1_0(
-                location.gnssLocationFlags,
-                latitude,
-                longitude,
-                altitude,
-                location.speedMetersPerSec,
-                bearing,
-                location.horizontalAccuracyMeters,
-                location.verticalAccuracyMeters,
-                location.speedAccuracyMetersPerSecond,
-                location.bearingAccuracyDegrees,
-                location.timestamp);
-        return gnssLocationCbImpl<GnssLocation_V1_0>(vplocation);
-    }
     return gnssLocationCbImpl<GnssLocation_V1_0>(location);
 }
 
 Return<void>
 GnssCallback::gnssLocationCb_2_0(const GnssLocation_V2_0& location) {
-    char value[PROPERTY_VALUE_MAX] = {0};
-    property_get("ro.boot.vm", value, "0");
-    if(strcmp(value, "1") == 0){
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.latitude", value, "30.537568333333336");
-        double latitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.longitude", value, "114.3504");
-        double longitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.altitude", value, "-12.7");
-        double altitude = strtod(value, NULL);
-
-        memset(value, 0, PROPERTY_VALUE_MAX);
-        property_get("ro.cell.lo.bearing", value, "344.61");
-        float bearing = strtod(value, NULL);
-
-        GnssLocation_V2_0 vplocation = createGnssLocation_V2_0(
-                location.v1_0.gnssLocationFlags,
-                latitude,
-                longitude,
-                altitude,
-                location.v1_0.speedMetersPerSec,
-                bearing,
-                location.v1_0.horizontalAccuracyMeters,
-                location.v1_0.verticalAccuracyMeters,
-                location.v1_0.speedAccuracyMetersPerSecond,
-                location.v1_0.bearingAccuracyDegrees,
-                location.v1_0.timestamp,
-                location.elapsedRealtime.flags,
-                location.elapsedRealtime.timestampNs,
-                location.elapsedRealtime.timeUncertaintyNs);
-        return gnssLocationCbImpl<GnssLocation_V2_0>(vplocation);
-    }
     return gnssLocationCbImpl<GnssLocation_V2_0>(location);
 }
 

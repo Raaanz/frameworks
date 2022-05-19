@@ -22,7 +22,6 @@ import android.content.res.Resources;
 import android.os.AsyncResult;
 import android.os.Message;
 import android.os.PersistableBundle;
-import android.os.SystemProperties;
 import android.telephony.CarrierConfigManager;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.Rlog;
@@ -756,13 +755,8 @@ public class SIMRecords extends IccRecords {
 
                     adn = (AdnRecord) ar.result;
 
-                    if(SystemProperties.get("ro.boot.vm").equals("1")){
-                        mMsisdn = SystemProperties.get("ro.cell.phone.msinum");
-                        mMsisdnTag = SystemProperties.get("ro.cell.phone.msinumtag");
-                    }else{
-                        mMsisdn = adn.getNumber();
-                        mMsisdnTag = adn.getAlphaTag();
-                    }
+                    mMsisdn = adn.getNumber();
+                    mMsisdnTag = adn.getAlphaTag();
 
                     log("MSISDN: " + /*mMsisdn*/ Rlog.pii(LOG_TAG, mMsisdn));
                     break;
@@ -833,13 +827,8 @@ public class SIMRecords extends IccRecords {
                         break;
                     }
 
-                    if(SystemProperties.get("ro.boot.vm").equals("1")){
-                        mIccId = SystemProperties.get("ro.cell.phone.sernum");
-                        mFullIccId = SystemProperties.get("ro.cell.phone.sernum");
-                    }else{
-                        mIccId = IccUtils.bcdToString(data, 0, data.length);
-                        mFullIccId = IccUtils.bchToString(data, 0, data.length);
-                    }
+                    mIccId = IccUtils.bcdToString(data, 0, data.length);
+                    mFullIccId = IccUtils.bchToString(data, 0, data.length);
 
                     log("iccid: " + SubscriptionInfo.givePrintableIccid(mFullIccId));
                     break;
